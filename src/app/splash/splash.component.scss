@@ -11,10 +11,12 @@ section {
     .main-text {
         width: 130px;
         padding: 4px 40px 4px 40px;
-        gap: 8px;
         border-radius: 32px;
         background-color: white;
         color: #050505;  
+        align-items: center;
+        display: flex;
+        justify-content: center;
     }
 
     .check-in {
@@ -27,8 +29,8 @@ section {
             font-size: 1rem;
             font-weight: 500;
             line-height: 20px;
-            text-align: center;
             margin-bottom: 5px;
+            text-align: center;
         }
      
 
