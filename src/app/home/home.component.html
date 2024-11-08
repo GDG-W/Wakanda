@@ -1,0 +1,111 @@
+<!-- check-in.component.html -->
+<div class="check-in-container">
+
+<div class="logo">
+  <div>
+    <app-gdg-logo />
+  </div>
+    <div class="logout">
+        <app-logout-icon />
+        <p>Logout</p>
+    </div>
+</div>
+    <header class="header">
+      <div class="header-left">
+        <!-- <div class="menu-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 4v.01M12 8v.01M12 12v.01M12 16v.01M12 20v.01" 
+              stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div> -->
+        <div class="welcome-text">
+          <span class="emoji">👋</span>
+          <h1>Welcome Sarah</h1>
+        </div>
+      </div>
+      <div class="checkin-header">
+        <p>Check-in overview</p>
+      </div>
+    </header>
+  
+    <div class="stats-container">
+      <div class="stats-card">
+        <app-stat-icon />
+        <h3>Total Tickets</h3>
+        <p class="stats-number">5,000</p>
+        <span class="stats-trend positive">↑ 7% up this week</span>
+      </div>
+      <div class="stats-card">
+        <app-stat-icon />
+        <h3>Total Check-ins</h3>
+        <p class="stats-number">5,000</p>
+        <span class="stats-trend positive">↑ 7% up this week</span>
+      </div>
+      <div class="stats-card">
+        <app-stat-icon />
+
+        <h3>Total Unchecked</h3>
+        <p class="stats-number">5,000</p>
+        <span class="stats-trend positive">↑ 7% up this week</span>
+      </div>
+    </div>
+  
+    <div class="search-container">
+      <input
+        type="text"
+        placeholder="Search for name, email, ticket id"
+        [(ngModel)]="searchQuery"
+        (input)="filterAttendees()"
+      />
+      <button class="scan-btn">QR code</button>
+    </div>
+  
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Full Name</th>
+            <th>Email Address</th>
+            <th>Ticket ID</th>
+          </tr>
+        </thead>
+        <tbody>
+            @for (attendee of filteredAttendees; track attendee.id) {
+                <tr [class.checked]="attendee.checked">
+                    <td>
+                      <input
+                        type="checkbox"
+                        [checked]="attendee.checked"
+                        (change)="toggleAttendee(attendee)"
+                      />
+                    </td>
+                    <td>
+                      <div class="attendee-name">
+                        <span class="initials">{{ attendee.initials }}</span>
+                        <span class="fullname">{{ attendee.fullName }}</span>
+                      </div>
+                    </td>
+                    <td>{{ attendee.email }}</td>
+                    <td>{{ attendee.ticket }}</td>
+                </tr>
+            }
+      
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <app-check-in-modal
+  [isOpen]="isModalOpen"
+  [attendeeName]="selectedAttendeeName"
+  (confirm)="confirmCheckIn()"
+  (cancel)="cancelCheckIn()"
+/>
+
+<app-check-in-success
+  [isOpen]="isSuccessModalOpen"
+  [attendee]="selectedAttendee"
+  (close)="closeSuccessModal()"
+/>
