@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StatIconComponent } from '../svgs/stat-icon/stat-icon.component';
 import { GdgLogoComponent } from '../svgs/gdg-logo/gdg-logo.component';
 import { LogoutIconComponent } from '../svgs/logout-icon/logout-icon.component';
 import { CheckInModalComponent } from '../check-in-modal/check-in-modal.component';
 import { CheckInSuccessComponent } from '../check-in-success/check-in-success.component';
+import { LogoutModalComponent } from '../logout-modal/logout-modal.component';
+import { Router } from '@angular/router';
 
 
 interface Attendee {
@@ -19,13 +21,15 @@ interface Attendee {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, StatIconComponent, GdgLogoComponent, LogoutIconComponent, CheckInModalComponent, CheckInSuccessComponent],
+  imports: [ReactiveFormsModule, FormsModule, StatIconComponent, GdgLogoComponent, LogoutIconComponent, CheckInModalComponent, CheckInSuccessComponent, LogoutModalComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   searchQuery = '';
-  isSuccessModalOpen = true;
+  isSuccessModalOpen = false;
+  isLogout = true;
+  private router = inject(Router)
   attendees: Attendee[] = [
     {
       id: '1',
@@ -94,5 +98,16 @@ export class HomeComponent {
   closeSuccessModal() {
     this.isSuccessModalOpen = false;
     this.selectedAttendee = null;
+  }
+
+  closeLogoutModal() {
+    this.isLogout = false;
+    this.selectedAttendee = null;
+  }
+
+  handleLogout() {
+    this.isLogout = false;
+    this.router.navigate(['/login'])
+
   }
 }

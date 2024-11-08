@@ -104,6 +104,14 @@
   (cancel)="cancelCheckIn()"
 />
 
+
+<app-logout-modal
+[isOpen]="isLogout"
+[attendeeName]="selectedAttendeeName"
+(confirm)="handleLogout()"
+(cancel)="closeLogoutModal()"
+/>
+
 <app-check-in-success
   [isOpen]="isSuccessModalOpen"
   [attendee]="selectedAttendee"

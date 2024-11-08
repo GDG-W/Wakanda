@@ -6,15 +6,15 @@
             <div class="emoji-container">
               <span class="emoji">🧐</span>
             </div>
-            <h2>Check In attendee?</h2>
-            <p>Are you sure you want to check in {{ attendeeName }}?</p>
+            <h2>Logout?</h2>
+            <p>Are you sure you want to log out {{ attendeeName }}? The app would go back to login page.</p>
             
             <div class="modal-actions">
               <button class="cancel-btn" (click)="cancel.emit()">
                 Cancel
               </button>
               <button class="confirm-btn" (click)="confirm.emit()">
-                Yes check in
+                Yes, logout
               </button>
             </div>
           </div>
