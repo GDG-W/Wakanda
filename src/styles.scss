@@ -1,21 +1,116 @@
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-Extralight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-ExtralightItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-SemiboldItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('../src/assets/fonts/GeneralSans-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+:root {
+  --font-family: 'GeneralSans', system-ui, -apple-system, 
+    'Segoe UI','Open Sans', 
+    'Helvetica Neue', sans-serif;
+}
+
+
+body {
+  font-family: var(--font-family), system-ui, -apple-system, 
+    'Segoe UI', 'Open Sans', 
+    'Helvetica Neue', sans-serif;
+  font-weight: 400; 
+}
+
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "DM Sans", serif;
-  font-optical-sizing: auto;
+    font-optical-sizing: auto;
   }
 
   *, *:before, *:after {
     box-sizing: inherit;
   }
 
-
-
-
-
   .btn--primary--dark {
-  max-width: 100%;
+    max-width: 100%;
     width: 260px;
     padding: 24px 72px 24px 72px;
     border-radius: 80px;

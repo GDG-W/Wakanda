@@ -28,7 +28,7 @@ interface Attendee {
 export class HomeComponent {
   searchQuery = '';
   isSuccessModalOpen = false;
-  isLogout = true;
+  isLogout = false;
   private router = inject(Router)
   attendees: Attendee[] = [
     {
@@ -108,6 +108,5 @@ export class HomeComponent {
   handleLogout() {
     this.isLogout = false;
     this.router.navigate(['/login'])
-
   }
 }
