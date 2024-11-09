@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StatIconComponent } from '../svgs/stat-icon/stat-icon.component';
 import { GdgLogoComponent } from '../svgs/gdg-logo/gdg-logo.component';
@@ -7,6 +7,9 @@ import { CheckInModalComponent } from '../check-in-modal/check-in-modal.componen
 import { CheckInSuccessComponent } from '../check-in-success/check-in-success.component';
 import { LogoutModalComponent } from '../logout-modal/logout-modal.component';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { ApiService } from '../services/api.service';
 
 
 interface Attendee {
@@ -25,9 +28,11 @@ interface Attendee {
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
   searchQuery = '';
   isSuccessModalOpen = true;
+  isLoading = signal(false);
+  private apiService = inject(ApiService);
 
   selectedAttendeeUser = {
     fullName: "Babatunde LAMIDI",
@@ -62,6 +67,12 @@ export class HomeComponent {
   isModalOpen = false;
   selectedAttendeeName = '';
   selectedAttendee: Attendee | null = null;
+
+
+
+  ngOnInit(): void { 
+    this.getUserProfiles()
+  }
 
   filterAttendees() {
     const query = this.searchQuery.toLowerCase();
@@ -116,5 +127,25 @@ export class HomeComponent {
   handleLogout() {
     this.isLogout = false;
     this.router.navigate(['/login'])
+  }
+
+
+  getUserProfiles() {
+    this.apiService.getUsers().pipe(
+      finalize(() =>
+        this.isLoading.set(false))
+    ).subscribe({
+      next: (response) => {
+        console.log('successful:', response);
+      },
+      error: (error) => {
+        console.error('Login error:', error);
+        this.router.navigate(['/home'])
+      }
+    });
+  }
+
+  gotoScanner() {
+    this.router.navigate(['/qr-scanner'])
   }
 }

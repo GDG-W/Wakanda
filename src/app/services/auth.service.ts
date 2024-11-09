@@ -26,7 +26,7 @@ export class AuthService {
 
 
   login(credentials: { email_address: string; id: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}sessions`, credentials).pipe(
+    return this.http.post<AuthResponse>(`${this.API_URL}volunteers/sessions`, credentials).pipe(
       tap(response => this.handleAuthResponse(response)),
       catchError(this.handleError)
     );

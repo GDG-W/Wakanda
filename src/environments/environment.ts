@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://asgard.devfest.notkruse.dev/volunteers/"
+  apiUrl: "https://asgard.devfest.notkruse.dev/"
 }

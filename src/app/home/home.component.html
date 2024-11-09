@@ -57,7 +57,7 @@
         [(ngModel)]="searchQuery"
         (input)="filterAttendees()"
       />
-      <button class="scan-btn">QR code</button>
+      <button class="scan-btn" (click)="gotoScanner()">QR code</button>
     </div>
   
     <div class="table-container">

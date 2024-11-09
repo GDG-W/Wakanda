@@ -70,6 +70,12 @@ export class ApiService {
     );
   }
 
+  getUsers(): Observable<any> {
+    return this.http.get(`${this.API_URL}users/profile`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   // Scan QR code
   scanQRCode(qrData: string): Observable<Attendee> {
     return this.http.post<CheckInResponse>(
