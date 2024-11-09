@@ -27,7 +27,15 @@ interface Attendee {
 })
 export class HomeComponent {
   searchQuery = '';
-  isSuccessModalOpen = false;
+  isSuccessModalOpen = true;
+
+  selectedAttendeeUser = {
+    fullName: "Babatunde LAMIDI",
+    ticketType: "2 Day Ticket",
+    ticket: "ID: 3343434",
+    initials: "BA"
+  }
+
   isLogout = false;
   private router = inject(Router)
   attendees: Attendee[] = [

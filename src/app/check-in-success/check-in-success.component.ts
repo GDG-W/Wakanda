@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TicketComponent } from '../svgs/ticket/ticket.component';
 
 @Component({
   selector: 'app-check-in-success',
   standalone: true,
-  imports: [],
+  imports: [TicketComponent],
   templateUrl: './check-in-success.component.html',
   styleUrl: './check-in-success.component.scss'
 })

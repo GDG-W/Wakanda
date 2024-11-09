@@ -131,7 +131,7 @@ body {
 }
 
   .form--input {
-    width: 340px;
+    width: 350px;
     padding: 16px;
     border-radius: 16px;
     border: 1.4px solid #E3E3E3;
@@ -154,3 +154,13 @@ body {
   .mt-1 {
     margin-top: 1rem;
   }
+
+  .error-message {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: left;
+    text-decoration-skip-ink: none;
+    color: red !important;
+    margin-top: 10px;
+}

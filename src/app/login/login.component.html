@@ -1,20 +1,62 @@
-<section> 
+<div class="login-container">
     <div class="text-info">
-        <app-gdg-logo />
-        <h2>Login 🤙🏽</h2>
-        <p>Enter details to continue!</p>
-        
+      <app-gdg-logo />
+      <h2>Login 🤙🏽</h2>
+      <p>Enter details to continue!</p>
+      
+      <form [formGroup]="loginForm" (ngSubmit)="handleLogin()">
         <div class="mb-1 input--container">
-            <label>Email Address</label>
-            <input type="email" placeholder="eg seneatorofthenbu@gmail.com" class="form--input"/>
+          <label>Email Address</label>
+          <input 
+            type="email" 
+            formControlName="email"
+            placeholder="eg seneatorofthenbu@gmail.com" 
+            class="form--input"
+          />
+        
         </div>
 
         <div class="input--container">
-            <label>Password</label>
-            <input type="password" placeholder="Enter password" class="form--input"/>
+          <label>Password</label>
+          <div class="password-input-wrapper">
+            <input 
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="id"
+              placeholder="Enter password" 
+              class="form--input"
+            />
+            <button 
+              type="button" 
+              class="password-toggle"
+              (click)="togglePassword()"
+            >
+              @if (showPassword()) {
+                <app-eye-close-icon />
+              } @else {
+                <app-eye-icon/>
+              }
+            </button>
+          </div>
+          
         </div>
+
+        @if (apiError()) {
+          <p class="error-message">{{ apiError() }}</p>
+        }
+        
+        <div class="app-bottom">
+          <button 
+            type="submit" 
+            class="btn--primary--dark" 
+          >
+            @if (isLoading()) {
+              <span class="loading-spinner"></span>
+              Loading...
+            } @else {
+              Continue
+            }
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="app-bottom">
-        <button class="btn--primary--dark">Continue</button>
-    </div>
-</section>
+  </div>

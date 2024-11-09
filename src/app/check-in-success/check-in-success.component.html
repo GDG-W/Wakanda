@@ -24,16 +24,11 @@
               <h3>{{ attendee?.fullName }}</h3>
               <div class="ticket-details">
                 <div class="ticket-type">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M2 10V8.5A2.5 2.5 0 0 1 4.5 6h15A2.5 2.5 0 0 1 22 8.5V10c-1.1 0-2 .9-2 2s.9 2 2 2v1.5a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 15.5V14c1.1 0 2-.9 2-2s-.9-2-2-2z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
+                  <app-ticket />
                   <span>Type: {{ attendee?.ticketType }}</span>
                 </div>
                 <div class="ticket-id">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 5h16c.6 0 1 .4 1 1v12c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1V6c0-.6.4-1 1-1z" stroke="currentColor" stroke-width="2"/>
-                    <path d="M7 9h10M7 13h10" stroke="currentColor" stroke-width="2"/>
-                  </svg>
+                  <app-ticket />
                   <span>ID: {{ attendee?.ticket }}</span>
                 </div>
               </div>
