@@ -32,6 +32,13 @@ export class AuthService {
     );
   }
 
+  userLogout(): Observable<any> {
+    return this.http.delete<any>(`${this.API_URL}volunteers/sessions`).pipe(
+      tap(response => response),
+      catchError(this.handleError)
+    );
+  }
+
 
   logout(): void {
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
