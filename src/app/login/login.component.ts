@@ -68,7 +68,7 @@ export class LoginComponent {
     ).subscribe({
       next: (response) => {
         this.router.navigate(['/home'])
-        console.log('Login successful:', response);
+        localStorage.setItem("user", JSON.stringify(response))
       },
       error: (error) => {
         this.apiError.set(error.error?.message || 'An error occurred during login');

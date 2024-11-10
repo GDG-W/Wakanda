@@ -10,95 +10,143 @@ import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { ApiService } from '../services/api.service';
+import { JsonPipe } from '@angular/common';
+
+
+interface Ticket {
+  title: string;
+  tag: string;
+}
+
+interface AttendeeUser {
+  id: string;
+  user_id: string;
+  day: number;
+  checked_in_by: string;
+  created_at: string;
+}
 
 
 interface Attendee {
   id: string;
-  initials: string;
-  fullName: string;
-  ticket: string;
-  email: string;
-  checked: boolean;
+  fullname: string;
+  email_address: string;
+  role: string;
+  level_of_expertise: 'beginner' | 'intermediate' | 'expert';  
+  shirt_size: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';        
+  ticket_id: string;
+  created_at: string;  
+  ticket: Ticket;
+  checked?: boolean;
 }
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, StatIconComponent, GdgLogoComponent, LogoutIconComponent, CheckInModalComponent, CheckInSuccessComponent, LogoutModalComponent],
+  imports: [ReactiveFormsModule, FormsModule, StatIconComponent, GdgLogoComponent, LogoutIconComponent, CheckInModalComponent, CheckInSuccessComponent, LogoutModalComponent, JsonPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit{
-  searchQuery = '';
-  isSuccessModalOpen = true;
-  isLoading = signal(false);
+  private router = inject(Router)
   private apiService = inject(ApiService);
+  // selectedAttendeeUser = {
+  //   // fullName: "Babatunde LAMIDI",
+  //   ticketType: "",
+  //   ticket: "",
+  //   // initials: "BA"
+  // }
 
-  selectedAttendeeUser = {
-    fullName: "Babatunde LAMIDI",
-    ticketType: "2 Day Ticket",
-    ticket: "ID: 3343434",
-    initials: "BA"
-  }
+  selectedAttendeeUser = signal<any>({
+    ticketType: '',
+    ticket: '',
+  });
 
   isLogout = false;
-  private router = inject(Router)
-  attendees: Attendee[] = [
-    {
-      id: '1',
-      initials: 'TA',
-      fullName: 'Temitope Aiyegbusi',
-      email: 'aiyegbusi@example.com',
-      ticket: '23232323',
-      checked: false
-    },
-    {
-      id: '2',
-      initials: 'SA',
-      fullName: 'Sodiq Akinjobi',
-      ticket: '23232323',
-      email: 'sodiqakinjobi@example.com',
-      checked: false
-    },
-    // Add more attendees...
-  ];
+  attendees: Attendee[] =  []
   filteredAttendees: Attendee[] = this.attendees;
-
   isModalOpen = false;
   selectedAttendeeName = '';
   selectedAttendee: Attendee | null = null;
+  userInfo: any = {}
+  searchQuery = '';
+  isSuccessModalOpen = false;
+  isLoading = signal(false);
+  selectedDay = signal('1');
+
 
 
 
   ngOnInit(): void { 
     this.getUserProfiles()
+    this.getUserDetails()
   }
 
   filterAttendees() {
     const query = this.searchQuery.toLowerCase();
     this.filteredAttendees = this.attendees.filter(attendee =>
-      attendee.fullName.toLowerCase().includes(query) ||
-      attendee.email.toLowerCase().includes(query)
+      attendee.fullname.toLowerCase().includes(query) ||
+      attendee.email_address.toLowerCase().includes(query)
     );
+  }
+  getUserDetails() {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      this.userInfo = JSON.parse(userStr);
+    }
   }
 
   toggleAttendee(attendee: Attendee) {
+    console.log(attendee, "Attendee");
+    
     attendee.checked = !attendee.checked;
-    this.openCheckInModal(attendee)
+        const checkedStatuses = JSON.parse(localStorage.getItem('checkedAttendees') || '{}');
+    checkedStatuses[attendee.id] = attendee.checked;
+    localStorage.setItem('checkedAttendees', JSON.stringify(checkedStatuses));
+    
+    this.openCheckInModal(attendee);
   }
-
   openCheckInModal(attendee: Attendee) {
     this.selectedAttendee = attendee;
-    this.selectedAttendeeName = attendee.fullName;
+    this.selectedAttendeeName = attendee.fullname;
     this.isModalOpen = true;
   }
 
   confirmCheckIn() {
     if (this.selectedAttendee) {
-      this.toggleAttendee(this.selectedAttendee);
       this.selectedAttendee.checked = true;
-      this.isModalOpen = false;
-      this.isSuccessModalOpen = true;
+      
+      const checkedStatuses = JSON.parse(localStorage.getItem('checkedAttendees') || '{}');
+      checkedStatuses[this.selectedAttendee.id] = true;
+      localStorage.setItem('checkedAttendees', JSON.stringify(checkedStatuses));
+      const payload = {
+        user_id: this.selectedAttendee.id,
+        day: this.selectedDay()
+      }
+
+      this.apiService.checkInAttendee(payload).subscribe({
+        next: (response: any) => {
+          localStorage.removeItem('checkedAttendees')
+          this.isModalOpen = false;
+          this.selectedAttendeeUser.set({
+            // fullName: this.selectedAttendee.fullname,
+            ticketType: `${response.day} Day(s) Tickets`,
+            ticket: `ID: ${response.id}`,
+            // initials: this.getInitials(this.selectedAttendee.fullname)
+          });
+       console.log(this.selectedAttendeeUser());
+       
+          this.isSuccessModalOpen = true;
+          console.log(response, "any");
+        },
+        error: (error) => {
+          localStorage.removeItem('checkedAttendees')
+          console.error('Error fetching users:', error);
+        }
+      });
+      
+    
+
     }
     this.closeModal();
   }
@@ -126,23 +174,49 @@ export class HomeComponent implements OnInit{
 
   handleLogout() {
     this.isLogout = false;
+    localStorage.clear()
     this.router.navigate(['/login'])
   }
 
-
   getUserProfiles() {
+    localStorage.removeItem('checkedAttendees')
+    const checkedStatuses = JSON.parse(localStorage.getItem('checkedAttendees') || '{}');
     this.apiService.getUsers().pipe(
-      finalize(() =>
-        this.isLoading.set(false))
+      finalize(() => this.isLoading.set(false))
     ).subscribe({
-      next: (response) => {
-        console.log('successful:', response);
+      next: (response: any) => {
+
+        const attendeesData = response.items || []; 
+                this.attendees = Array.isArray(attendeesData) ? attendeesData.map(attendee => ({
+          ...attendee,
+          checked: checkedStatuses[attendee.id] || false
+        })) : [];
+  
+        this.filteredAttendees = this.attendees;
       },
       error: (error) => {
-        console.error('Login error:', error);
-        this.router.navigate(['/home'])
+        console.error('Error fetching users:', error);
       }
     });
+  }
+
+
+  handleDayChange(event: Event) {
+    const value = (event.target as HTMLSelectElement).value;
+    this.selectedDay.set(value);
+  }
+
+  handleCheckIn() {
+    const payload = {}
+
+  }
+
+  getInitials(name: string) {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase();
   }
 
   gotoScanner() {

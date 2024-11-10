@@ -20,11 +20,22 @@
         </div> -->
         <div class="welcome-text">
           <span class="emoji">👋</span>
-          <h1>Welcome Sarah</h1>
+          <h1>Welcome {{userInfo.fullname || ''}}</h1>
         </div>
       </div>
       <div class="checkin-header">
         <p>Check-in overview</p>
+
+        <div>
+          <select 
+          class="select"
+          [value]="selectedDay()" 
+          (change)="handleDayChange($event)"
+        >
+          <option value="1">Day 1</option>
+          <option value="2">Day 2</option>
+        </select>
+        </div>
       </div>
     </header>
   
@@ -75,6 +86,7 @@
                 <tr [class.checked]="attendee.checked">
                     <td>
                       <input
+                       class="checkbox"
                         type="checkbox"
                         [checked]="attendee.checked"
                         (change)="toggleAttendee(attendee)"
@@ -82,12 +94,12 @@
                     </td>
                     <td>
                       <div class="attendee-name">
-                        <span class="initials">{{ attendee.initials }}</span>
-                        <span class="fullname">{{ attendee.fullName }}</span>
+                        <span class="initials">{{ getInitials(attendee.fullname) }}</span>
+                        <span class="fullname">{{ attendee.fullname }}</span>
                       </div>
                     </td>
-                    <td>{{ attendee.email }}</td>
-                    <td>{{ attendee.ticket }}</td>
+                    <td>{{ attendee.email_address }}</td>
+                    <td class="ticket-id">{{ attendee.ticket_id }}</td>
                 </tr>
             }
       

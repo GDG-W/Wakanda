@@ -19,7 +19,9 @@
           <h2>Check In Complete</h2>
           
           <div class="attendee-card">
-            <div class="initials">{{ attendee?.initials }}</div>
+            @if (attendee?.initials) {
+              <div class="initials">{{ attendee?.initials }}</div>
+            }
             <div class="attendee-info">
               <h3>{{ attendee?.fullName }}</h3>
               <div class="ticket-details">

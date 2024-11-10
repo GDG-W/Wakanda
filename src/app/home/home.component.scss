@@ -15,7 +15,7 @@ $transition: all 0.3s ease;
   max-width: 100%;
   margin: 0 auto;
   padding: 1rem;
-  height: 100vh;
+  height: 100%;
   
   @media (min-width: 768px) {
     max-width: 768px;
@@ -80,6 +80,24 @@ $transition: all 0.3s ease;
     font-weight: 500;
     line-height: 24px;
     text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+      .select {
+        background: #FFEDC7;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        text-align: left;
+        color: #0A0A0A;
+        border-radius: 56px;
+        padding: 6px;
+        border: none;
+        cursor: pointer;
+        outline: none;
+      }
+
   }
   .welcome-text {
     display: flex;
@@ -226,13 +244,18 @@ $transition: all 0.3s ease;
       padding: 1rem;
       text-align: left;
       border-bottom: 1px solid $border-color;
+      cursor: pointer;
     }
 
     th {
-      font-size: 0.75rem;
       text-transform: uppercase;
-      color: $secondary-color;
       font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      text-align: left;
+      color: #1E1E1E;
+
     }
 
     tr {
@@ -263,8 +286,50 @@ $transition: all 0.3s ease;
       }
 
       .fullname {
-        width: 10rem;
+        width: 8rem;
       }
+
+    }
+
+    .ticket-id {
+      width: 10rem;
+    }
+  }
+
+  .ticket-id {
+    width: 10rem;
+  }
+
+  .checkbox {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    appearance: none; 
+    -webkit-appearance: none;
+    background-color: #FFF6E0;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    position: relative;
+  
+    &:checked {
+      background-color: #050505;
+      border-color: #050505;
+        &:after {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 3px;
+        width: 6px;
+        height: 12px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    }
+  
+    // Hover effect
+    &:hover {
+      border-color: #050505;
     }
   }
 }

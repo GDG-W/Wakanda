@@ -14,11 +14,7 @@ export interface Attendee {
   checked: boolean;
 }
 
-export interface CheckInResponse {
-  success: boolean;
-  message: string;
-  attendee: Attendee;
-}
+
 
 export interface AttendeeResponse {
   data: Attendee[];
@@ -54,10 +50,9 @@ export class ApiService {
   }
 
   // Check in an attendee
-  checkInAttendee(attendeeId: string): Observable<CheckInResponse> {
-    return this.http.post<CheckInResponse>(
-      `${this.API_URL}/attendees/${attendeeId}/check-in`,
-      {}
+  checkInAttendee(payload: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.API_URL}volunteers/checkins `, payload
     ).pipe(
       catchError(this.handleError)
     );
@@ -71,14 +66,14 @@ export class ApiService {
   }
 
   getUsers(): Observable<any> {
-    return this.http.get(`${this.API_URL}users/profile`).pipe(
+    return this.http.get(`${this.API_URL}users`).pipe(
       catchError(this.handleError)
     );
   }
 
   // Scan QR code
   scanQRCode(qrData: string): Observable<Attendee> {
-    return this.http.post<CheckInResponse>(
+    return this.http.post<any>(
       `${this.API_URL}/attendees/scan`,
       { qrData }
     ).pipe(
