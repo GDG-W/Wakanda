@@ -50,6 +50,8 @@ interface Attendee {
 export class HomeComponent implements OnInit{
   private router = inject(Router)
   private apiService = inject(ApiService);
+  private authService = inject(AuthService);
+
   // selectedAttendeeUser = {
   //   // fullName: "Babatunde LAMIDI",
   //   ticketType: "",
@@ -144,9 +146,6 @@ export class HomeComponent implements OnInit{
           console.error('Error fetching users:', error);
         }
       });
-      
-    
-
     }
     this.closeModal();
   }
@@ -174,8 +173,16 @@ export class HomeComponent implements OnInit{
 
   handleLogout() {
     this.isLogout = false;
-    localStorage.clear()
-    this.router.navigate(['/login'])
+    this.authService.userLogout().subscribe({
+      next: (response: any) => {
+        localStorage.clear()
+        this.router.navigate(['/login'])
+      },
+      error: (error) => {
+        console.log(error, ">>>");
+      }
+    });
+   
   }
 
   getUserProfiles() {
