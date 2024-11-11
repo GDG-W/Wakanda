@@ -130,7 +130,6 @@ $transition: all 0.3s ease;
   .stats-container {
       display: flex;
       grid-auto-flow: column;
-      grid-auto-columns: 150px; // Fixed width for each card
       gap: 1rem;
       margin-bottom: 2rem;
       overflow-x: auto;
@@ -146,7 +145,8 @@ $transition: all 0.3s ease;
         padding: 1rem;
         border: 1px solid $border-color;
         border-radius: 8px;
-        min-width: 170px; // Ensure minimum width
+        width: 100%; 
+        min-width: 170px;
     
         h3 {
           color: $secondary-color;
@@ -340,3 +340,6 @@ $transition: all 0.3s ease;
 
 
 
+.error {
+  color: red;
+}

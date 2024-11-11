@@ -70,6 +70,12 @@
       />
       <button class="scan-btn" (click)="gotoScanner()">QR code</button>
     </div>
+
+    @if (errorMessage()) {
+
+      <p class="mb-1 error"> {{errorMessage()}}</p>
+
+    }
   
     <div class="table-container">
       <table>
@@ -82,26 +88,33 @@
           </tr>
         </thead>
         <tbody>
+          @if(filteredAttendees.length > 0) {
             @for (attendee of filteredAttendees; track attendee.id) {
-                <tr [class.checked]="attendee.checked">
-                    <td>
-                      <input
-                       class="checkbox"
-                        type="checkbox"
-                        [checked]="attendee.checked"
-                        (change)="toggleAttendee(attendee)"
-                      />
-                    </td>
-                    <td>
-                      <div class="attendee-name">
-                        <span class="initials">{{ getInitials(attendee.fullname) }}</span>
-                        <span class="fullname">{{ attendee.fullname }}</span>
-                      </div>
-                    </td>
-                    <td>{{ attendee.email_address }}</td>
-                    <td class="ticket-id">{{ attendee.id }}</td>
-                </tr>
-            }
+              <tr [class.checked]="attendee.checked">
+                  <td>
+                    <input
+                     class="checkbox"
+                      type="checkbox"
+                      [checked]="attendee.checked"
+                      (change)="toggleAttendee(attendee)"
+                    />
+                  </td>
+                  <td>
+                    <div class="attendee-name">
+                      <span class="initials">{{ getInitials(attendee.fullname) }}</span>
+                      <span class="fullname">{{ attendee.fullname }}</span>
+                    </div>
+                  </td>
+                  <td>{{ attendee.email_address }}</td>
+                  <td class="ticket-id">{{ attendee.id }}</td>
+              </tr>
+          }
+        } @else {
+          <tr>
+            <p>Loading please wait</p>
+          </tr>
+        }
+         
       
         </tbody>
       </table>
