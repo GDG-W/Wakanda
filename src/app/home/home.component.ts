@@ -88,7 +88,8 @@ export class HomeComponent implements OnInit{
     const query = this.searchQuery.toLowerCase();
     this.filteredAttendees = this.attendees.filter(attendee =>
       attendee.fullname.toLowerCase().includes(query) ||
-      attendee.email_address.toLowerCase().includes(query)
+      attendee.email_address.toLowerCase().includes(query) ||
+      attendee.id.toLowerCase().includes(query)
     );
   }
   getUserDetails() {

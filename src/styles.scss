@@ -95,6 +95,9 @@ body {
     'Segoe UI', 'Open Sans', 
     'Helvetica Neue', sans-serif;
   font-weight: 400; 
+  height: 100%;
+  background-color: #FFF6E0;
+  padding: 1rem;
 }
 
 
@@ -130,7 +133,7 @@ body {
 }
 
   .form--input {
-  width: 300px;
+   width: 300px;
     padding: 16px;
     border-radius: 16px;
     border: 1.4px solid #E3E3E3;
@@ -138,7 +141,6 @@ body {
     background: #FFF6E0;
     outline: none;
     margin-top: 5px;
-    font-family: General Sans;
     font-size: 16px;
     font-weight: 500;
     line-height: 24px;
