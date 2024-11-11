@@ -8,6 +8,33 @@
             </div>
             <h2>Check In attendee?</h2>
             <p>Are you sure you want to check in {{ attendeeName }}?</p>
+
+            <div class="radio">
+              <div>
+                <input
+                  class="checkbox"
+                type="checkbox"
+                id="female"
+                class="checkbox"
+                [checked]="isFemale()"
+                (change)="updateFemale($event)"
+              />
+              <label>Female</label>
+            </div>
+
+
+              <div>
+                <input
+                class="checkbox"
+                type="checkbox"
+                id="male"
+                class="checkbox"
+                [checked]="isMale()"
+                (change)="updateMale($event)"
+              />
+              <label>Male</label>
+              </div>
+            </div>
             
             <div class="modal-actions">
               <button class="cancel-btn" (click)="cancel.emit()">

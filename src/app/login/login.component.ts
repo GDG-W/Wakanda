@@ -22,7 +22,9 @@ interface ValidationError {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [OnboardingIconComponent,GdgLogoComponent, ReactiveFormsModule, EyeCloseIconComponent, EyeIconComponent],
+  imports: [
+    GdgLogoComponent, ReactiveFormsModule, EyeCloseIconComponent, EyeIconComponent
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -56,7 +58,13 @@ export class LoginComponent {
     this.showPassword.update(value => !value);
   }
   handleLogin() {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+  
     const formValue = this.loginForm.value;
+    
     this.isLoading.set(true);
     this.apiError.set(null)
 
@@ -73,7 +81,6 @@ export class LoginComponent {
       error: (error) => {
         this.apiError.set(error.error?.message || 'An error occurred during login');
         console.error('Login error:', error);
-        this.router.navigate(['/home'])
       }
     });
   }

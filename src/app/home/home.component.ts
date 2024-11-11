@@ -43,7 +43,9 @@ interface Attendee {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, StatIconComponent, GdgLogoComponent, LogoutIconComponent, CheckInModalComponent, CheckInSuccessComponent, LogoutModalComponent, JsonPipe],
+  imports: [
+    ReactiveFormsModule, FormsModule, StatIconComponent, GdgLogoComponent, LogoutIconComponent, CheckInModalComponent, CheckInSuccessComponent, LogoutModalComponent
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -75,6 +77,7 @@ export class HomeComponent implements OnInit{
   isSuccessModalOpen = false;
   isLoading = signal(false);
   selectedDay = signal('1');
+  checkInType = signal<'female' | 'male' | 'none'>('none');
 
 
 
@@ -124,7 +127,8 @@ export class HomeComponent implements OnInit{
       localStorage.setItem('checkedAttendees', JSON.stringify(checkedStatuses));
       const payload = {
         user_id: this.selectedAttendee.id,
-        day: this.selectedDay()
+        day: this.selectedDay(),
+        gender: this.checkInType()
       }
 
       this.apiService.checkInAttendee(payload).subscribe({
@@ -149,6 +153,10 @@ export class HomeComponent implements OnInit{
       });
     }
     this.closeModal();
+  }
+
+  handleCheckInType(data: { type: 'female' | 'male' | 'none' }) {
+    this.checkInType.set(data.type);
   }
 
   cancelCheckIn() {
@@ -216,7 +224,6 @@ export class HomeComponent implements OnInit{
 
   handleCheckIn() {
     const payload = {}
-
   }
 
   getInitials(name: string) {

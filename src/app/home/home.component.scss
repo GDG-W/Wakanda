@@ -12,9 +12,9 @@ $transition: all 0.3s ease;
 
 .check-in-container {
   background-color: $background-color;
-  width: 60%;
   height: 100%;
   margin: 0 auto;
+  padding: 1rem;
 
   .logo {
     width: 100%;
@@ -178,13 +178,13 @@ $transition: all 0.3s ease;
     margin-bottom: 2rem;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     gap: 1rem;
   
     input {
-      width: 100%;
       // padding: 0.75rem;
-      padding-left: 1rem;
+      padding: 1rem;
+      width: max-content;
+      width: 100%;
   
       border: 1px solid $border-color;
       border-radius: 4px;
