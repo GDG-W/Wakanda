@@ -1,18 +1,19 @@
 .login-container {
     background-color: #FFF6E0;
     width: 100%;
-    height: 100vh;
     display: flex;
     justify-content: center;
     overflow: hidden;
     overflow-y: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 
     .text-info {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        height: 100%;
         h2 {
             font-size: 28px;
             font-weight: 600;
