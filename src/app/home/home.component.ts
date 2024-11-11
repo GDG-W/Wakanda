@@ -71,13 +71,14 @@ export class HomeComponent implements OnInit{
   filteredAttendees: Attendee[] = this.attendees;
   isModalOpen = false;
   selectedAttendeeName = '';
-  selectedAttendee: Attendee | null = null;
+  selectedAttendee : Attendee | null  = null;
   userInfo: any = {}
   searchQuery = '';
   isSuccessModalOpen = false;
   isLoading = signal(false);
   selectedDay = signal('1');
-  checkInType = signal<'female' | 'male' | 'none'>('none');
+  checkInType = signal('');
+  errorMessage = signal('')
 
 
 
@@ -104,6 +105,8 @@ export class HomeComponent implements OnInit{
 
   toggleAttendee(attendee: Attendee) {
     console.log(attendee, "Attendee");
+    this.errorMessage.set('');
+    this.checkInType.set('');
     
     attendee.checked = !attendee.checked;
         const checkedStatuses = JSON.parse(localStorage.getItem('checkedAttendees') || '{}');
@@ -120,11 +123,6 @@ export class HomeComponent implements OnInit{
 
   confirmCheckIn() {
     if (this.selectedAttendee) {
-      this.selectedAttendee.checked = true;
-      
-      const checkedStatuses = JSON.parse(localStorage.getItem('checkedAttendees') || '{}');
-      checkedStatuses[this.selectedAttendee.id] = true;
-      localStorage.setItem('checkedAttendees', JSON.stringify(checkedStatuses));
       const payload = {
         user_id: this.selectedAttendee.id,
         day: this.selectedDay(),
@@ -133,30 +131,62 @@ export class HomeComponent implements OnInit{
 
       this.apiService.checkInAttendee(payload).subscribe({
         next: (response: any) => {
-          localStorage.removeItem('checkedAttendees')
+          this.checkInType.set('');
+          localStorage.removeItem('checkedAttendees');
+          
+          this.attendees = this.attendees.map(attendee => {
+            if (attendee.id === this.selectedAttendee?.id) {
+              return { ...attendee, checked: false };
+            }
+            return attendee;
+          });
+          
+          // Update filtered attendees as well
+          this.filteredAttendees = this.filteredAttendees.map(attendee => {
+            if (attendee.id === this.selectedAttendee?.id) {
+              return { ...attendee, checked: false };
+            }
+            return attendee;
+          });
+
           this.isModalOpen = false;
           this.selectedAttendeeUser.set({
-            // fullName: this.selectedAttendee.fullname,
             ticketType: `${response.day} Day(s) Tickets`,
             ticket: `ID: ${response.id}`,
-            // initials: this.getInitials(this.selectedAttendee.fullname)
-          });
-       console.log(this.selectedAttendeeUser());
-       
+          });       
           this.isSuccessModalOpen = true;
-          console.log(response, "any");
         },
         error: (error) => {
-          localStorage.removeItem('checkedAttendees')
-          console.error('Error fetching users:', error);
+          // Remove from localStorage
+          localStorage.removeItem('checkedAttendees');
+          this.checkInType.set('');
+          this.errorMessage.set(error.error);
+          
+          // Uncheck the checkbox in the attendees array
+          this.attendees = this.attendees.map(attendee => {
+            if (attendee.id === this.selectedAttendee?.id) {
+              return { ...attendee, checked: false };
+            }
+            return attendee;
+          });
+          
+          // Update filtered attendees as well
+          this.filteredAttendees = this.filteredAttendees.map(attendee => {
+            if (attendee.id === this.selectedAttendee?.id) {
+              return { ...attendee, checked: false };
+            }
+            return attendee;
+          });
+
+          this.selectedAttendee = null;
         }
       });
     }
     this.closeModal();
   }
 
-  handleCheckInType(data: { type: 'female' | 'male' | 'none' }) {
-    this.checkInType.set(data.type);
+  handleCheckInType(event: any) {    
+  this.checkInType.set(event);
   }
 
   cancelCheckIn() {
@@ -165,10 +195,25 @@ export class HomeComponent implements OnInit{
 
   private closeModal() {
     this.isModalOpen = false;
+    if (this.selectedAttendee) {
+      // Uncheck the checkbox when modal is closed
+      this.attendees = this.attendees.map(attendee => {
+        if (attendee.id === this.selectedAttendee?.id) {
+          return { ...attendee, checked: false };
+        }
+        return attendee;
+      });
+      
+      this.filteredAttendees = this.filteredAttendees.map(attendee => {
+        if (attendee.id === this.selectedAttendee?.id) {
+          return { ...attendee, checked: false };
+        }
+        return attendee;
+      });
+    }
     this.selectedAttendee = null;
     this.selectedAttendeeName = '';
   }
-
 
   closeSuccessModal() {
     this.isSuccessModalOpen = false;

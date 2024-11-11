@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 
 
 interface CheckInData {
-  type: 'female' | 'male' | 'none';
+  type: 'female' | 'male';
 }
 
 @Component({
@@ -18,13 +18,13 @@ export class CheckInModalComponent {
   @Input() attendeeName = '';
   @Output() confirm = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
-  @Output() checkInType = new EventEmitter<CheckInData>();
+  @Output() checkInType = new EventEmitter<any>();
   isFemale = signal(false);
   isMale = signal(false);
 
 
   onConfirm() {
-    let type: CheckInData['type'] = 'none';
+    let type: CheckInData['type'] = 'female';
     if (this.isFemale()) type = 'female';
     else if (this.isMale()) type = 'male';
     this.checkInType.emit({ type });
@@ -35,16 +35,20 @@ export class CheckInModalComponent {
 
 
   updateFemale(event: Event) {
-    this.isMale.set(false);
     const checkbox = event.target as HTMLInputElement;
     this.isFemale.set(checkbox.checked);
+    this.checkInType.emit('female');
+    this.isMale.set(false);
+
 
   }
 
   updateMale(event: Event) {
-    this.isFemale.set(false);
     const checkbox = event.target as HTMLInputElement;
     this.isMale.set(checkbox.checked);
+    this.checkInType.emit('male');
+    this.isFemale.set(false);
+
   }
 
 }
